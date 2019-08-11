@@ -3,7 +3,7 @@ import logging
 
 import voluptuous as vol
 
-from homeassistant.components.weather import PLATFORM_SCHEMA, ATTR_FORECAST_CONDITION, ATTR_FORECAST_PRECIPITATION, ATTR_FORECAST_TEMP, ATTR_FORECAST_TEMP_LOW, ATTR_FORECAST_TIME, WeatherEntity
+from homeassistant.components.weather import PLATFORM_SCHEMA, ATTR_FORECAST_CONDITION, ATTR_FORECAST_PRECIPITATION, ATTR_FORECAST_TEMP, ATTR_FORECAST_TEMP_LOW, ATTR_FORECAST_TIME, ATTR_WEATHER_VISIBILITY, WeatherEntity
 from homeassistant.const import (
     CONF_LATITUDE, CONF_LONGITUDE, CONF_NAME, TEMP_CELSIUS)
 from homeassistant.helpers import config_validation as cv
@@ -114,7 +114,7 @@ class BOMWeatherMod(WeatherEntity):
         return next((
                 k for k, v in CONDITION_CLASSES.items()
                 if self.bom_data.get_reading('weather') in v), None)
-		
+        
 
     # Now implement the WeatherEntity interface
 
@@ -142,6 +142,11 @@ class BOMWeatherMod(WeatherEntity):
     def wind_speed(self):
         """Return the wind speed."""
         return self.bom_data.get_reading('wind_spd_kmh')
+    
+    @property   
+    def visibility(self):
+        """Return the visibility."""
+        return self.bom_data.get_reading('vis_km')  
 
     @property
     def wind_bearing(self):
